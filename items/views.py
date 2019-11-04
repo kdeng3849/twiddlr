@@ -100,12 +100,7 @@ def search(request):
     print(data)
     print(request.user.username)
 
-    if limit not in range(101):
-        response = {
-            'status': 'error',
-            'error': 'Limit must be between 1 and 100 inclusive'
-        }
-        return JsonResponse(response)
+    limit = limit if limit in range(201) else 200
 
     response = {
         'status': 'OK',

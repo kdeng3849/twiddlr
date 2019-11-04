@@ -189,12 +189,7 @@ def user_posts(request, username):
         return JsonResponse(response)
 
     limit = int(request.GET.get('limit')) if request.GET.get('limit') else 50
-    if limit not in range(201):
-        response = {
-            "status": "error",
-            "error": "Limit is a maximum of 200"
-        }
-        return JsonResponse(response)
+    limit = limit if limit in range(201) else 200
 
     query = list(Item.objects.filter(username=username).order_by('-timestamp'))[:limit]
     for item in query:
@@ -210,12 +205,7 @@ def user_followers(request, username):
     }
 
     limit = int(request.GET.get('limit')) if request.GET.get('limit') else 50
-    if limit not in range(201):
-        response = {
-            "status": "error",
-            "error": "Limit is a maximum of 200"
-        }
-        return JsonResponse(response)
+    limit = limit if limit in range(201) else 200
 
     try:
         profile = Profile.objects.get(user__username=username)
@@ -233,12 +223,7 @@ def user_following(request, username):
     }
 
     limit = int(request.GET.get('limit')) if request.GET.get('limit') else 50
-    if limit not in range(201):
-        response = {
-            "status": "error",
-            "error": "Limit is a maximum of 200"
-        }
-        return JsonResponse(response)
+    limit = limit if limit in range(201) else 200
 
     try:
         profile = Profile.objects.get(user__username=username)
