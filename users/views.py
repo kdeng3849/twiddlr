@@ -70,7 +70,10 @@ def add_user(request):
         email = EmailMessage(
             mail_subject, message, to=[to_email]
         )
-        email.send()
+        try:
+            email.send()
+        except:
+            pass
 
         return JsonResponse({"status": "OK"})
 

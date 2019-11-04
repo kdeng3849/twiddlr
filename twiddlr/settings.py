@@ -32,6 +32,7 @@ ALLOWED_HOSTS = ['*']
 
 INSTALLED_APPS = [
     'twiddlr',
+    'items',
     'users',
     'crispy_forms',
     'database_files',
