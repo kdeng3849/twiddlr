@@ -114,6 +114,9 @@ def verify(request):
         user.is_active = True
         user.save()
 
+        profile = Profile(user=user)
+        profile.save()
+
         return JsonResponse({"status": "OK"})
 
     return JsonResponse({"status": "error"})
