@@ -1,0 +1,22 @@
+{% extends "base.html" %}
+{% load crispy_forms_tags %}
+
+{% block content %}
+<div id="signup" class="page col-6">
+    <h2>Create an account</h2>
+    <hr />
+    <form id="signupForm" method="POST">
+        <fieldset class="form-group col-8">
+            {{ addUserForm | crispy  }}
+        </fieldset>
+        <div class="form-group">
+            <button type="submit" class="btn btn-info rounded-pill px-5">Sign up</button>
+        </div>
+        <div class="border-top pt-3">
+            <small class="text-muted">
+                Already have an account? <a href="login">Log in</a>
+            </small>
+        </div>
+    </form>
+</div>
+{% endblock content %}

@@ -1,0 +1,22 @@
+{% extends "base.html" %}
+{% load crispy_forms_tags %}
+
+{% block content %}
+<div id="login" class="page col-6">
+    <h2>Log in</h2>
+    <hr />
+    <form id="loginForm" method="POST">
+        <fieldset class="form-group col-8">
+            {{ loginForm | crispy  }}
+        </fieldset>
+        <div class="form-group">
+            <button class="btn btn-info rounded-pill px-5">Log in</button>
+        </div>
+        <div class="border-top pt-3">
+            <small class="text-muted">
+                Already have an account? <a href="signup">Sign up</a>
+            </small>
+        </div>
+    </form>
+</div>
+{% endblock %}
