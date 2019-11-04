@@ -2,12 +2,12 @@ import time
 import json
 import uuid
 
-from django.core import serializers
 from django.http.response import HttpResponse, JsonResponse
 from django.shortcuts import render
 from django.views.decorators.csrf import csrf_exempt
 from django.views.decorators.http import require_http_methods
 
+from users.models import Profile
 from .models import Item
 
 def home(request):
@@ -124,11 +124,10 @@ def search(request):
         username_query = Item.objects.filter(username=username)
         query &= username_query
 
-    # if following and request.user.is_authenticated:
-    #     # print(request.user.username)
-    #     profile = Profile.objects.get(user__username=request.user.username)
-    #     following_query = Item.objects.filter(username__in=profile.get_following())
-    #     query &= following_query
+    if following and request.user.is_authenticated:
+        profile = Profile.objects.get(user__username=request.user.username)
+        following_query = Item.objects.filter(username__in=profile.get_following())
+        query &= following_query
 
     # query = timestamp_query & username_query & following_query
     # query = timestamp_query

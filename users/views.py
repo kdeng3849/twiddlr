@@ -10,7 +10,9 @@ from django.template.loader import render_to_string
 from django.views.decorators.csrf import csrf_exempt
 from django.views.decorators.http import require_http_methods
 
+from items.models import Item
 from .forms import AddUserForm, LoginForm
+from .models import Profile
 from .tokens import account_activation_token
 
 def index(request):
@@ -125,7 +127,7 @@ def login_user(request):
             "loginForm": LoginForm,
         }
         return render(request, 'users/login.html', context)
- 
+
     data = json.loads(request.body.decode('utf-8'))
     form = LoginForm(data)
 
@@ -152,3 +154,118 @@ def logout_user(request):
     response.delete_cookie('username')
 
     return response
+
+def user_profile(request, username):
+    response = {
+        "status": "OK",
+        "user": {}
+    }
+
+    try:
+        profile = Profile.objects.get(user__username=username)
+    except Profile.DoesNotExist:
+        return JsonResponse({"status": "error"})
+
+    response['user']['email'] = profile.user.email
+    response['user']['followers'] = profile.count_followers()
+    response['user']['following'] = profile.count_following()
+
+    return JsonResponse(response)
+
+def user_posts(request, username):
+    response = {
+        "status": "OK",
+        "items": []
+    }
+
+    limit = limit = int(request.GET.get('limit')) if request.GET.get('limit') else 50
+    if limit not in range(201):
+        response = {
+            "status": "error",
+            "error": "Limit is a maximum of 200"
+        }
+        return JsonResponse(response)
+
+    query = list(Item.objects.filter(username=username).order_by('-timestamp'))[:limit]
+    for item in query:
+        response['items'].append(item.get_item())
+
+    return JsonResponse(response)
+
+def user_followers(request, username):
+    response = {
+        "status": "OK",
+        "users": []
+    }
+
+    limit = int(request.GET.get('limit')) if request.GET.get('limit') else 50
+    if limit not in range(201):
+        response = {
+            "status": "error",
+            "error": "Limit is a maximum of 200"
+        }
+        return JsonResponse(response)
+
+    try:
+        profile = Profile.objects.get(user__username=username)
+    except Profile.DoesNotExist:
+        return JsonResponse({"status": "error"})
+
+    response['users'] = profile.get_followers()[:limit]
+
+    return JsonResponse(response)
+
+def user_following(request, username):
+    response = {
+        "status": "OK",
+        "users": []
+    }
+
+    limit = int(request.GET.get('limit')) if request.GET.get('limit') else 50
+    if limit not in range(201):
+        response = {
+            "status": "error",
+            "error": "Limit is a maximum of 200"
+        }
+        return JsonResponse(response)
+
+    try:
+        profile = Profile.objects.get(user__username=username)
+    except Profile.DoesNotExist:
+        return JsonResponse({"status": "error"})
+
+    response['users'] = profile.get_following()[:limit]
+
+    return JsonResponse(response)
+
+@csrf_exempt
+# @require_http_methods(["POST"])
+def follow_user(request):
+    response = {
+        "status": "OK"
+    }
+
+    data = json.loads(request.body.decode('utf-8'))
+    username = data['username']
+    follow = data['follow']
+
+    try:
+        profile_following = Profile.objects.get(user__username=request.user.username)
+        profile_followed = Profile.objects.get(user__username=username)
+        user_followed = User.objects.get(username=username)
+    except (Profile.DoesNotExist, User.DoesNotExist):
+        return JsonResponse({"status": "error"})
+
+    if follow:
+        profile_following.add_following(user_followed.username)
+        profile_followed.add_follower(request.user.username)
+
+    else:
+        profile_following.remove_following(user_followed.username)
+        profile_followed.remove_follower(request.user.username)
+
+
+    profile_following.save()
+    profile_followed.save()
+
+    return JsonResponse(response)
