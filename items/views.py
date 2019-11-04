@@ -46,10 +46,11 @@ def add_item(request):
     # # item.property = ItemProperty()
     # item.content = content
     item.save()
+    # print(type(item.id))
 
     context = {
         'status': 'OK',
-        'id': item.id,
+        'id': str(item.id),
         # 'timestamp': item.timestamp,
     }
     return JsonResponse(context)

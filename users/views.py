@@ -181,7 +181,14 @@ def user_posts(request, username):
         "items": []
     }
 
-    limit = limit = int(request.GET.get('limit')) if request.GET.get('limit') else 50
+    if not User.objects.filter(username=username).exists():
+        response = {
+            "status": "error",
+            "error": "Nonexistent user"
+        }
+        return JsonResponse(response)
+
+    limit = int(request.GET.get('limit')) if request.GET.get('limit') else 50
     if limit not in range(201):
         response = {
             "status": "error",
@@ -191,6 +198,7 @@ def user_posts(request, username):
 
     query = list(Item.objects.filter(username=username).order_by('-timestamp'))[:limit]
     for item in query:
+        # print(type(item.id))
         response['items'].append(item.id)
 
     return JsonResponse(response)
