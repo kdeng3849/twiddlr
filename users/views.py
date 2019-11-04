@@ -242,8 +242,11 @@ def follow_user(request):
     }
 
     data = json.loads(request.body.decode('utf-8'))
-    username = data['username']
-    follow = data['follow']
+    print(data)
+    username = data.get('username')
+    follow = data.get('follow')
+    #username = data['username']
+    #follow = data['follow']
 
     try:
         profile_following = Profile.objects.get(user__username=request.user.username)
