@@ -191,7 +191,7 @@ def user_posts(request, username):
 
     query = list(Item.objects.filter(username=username).order_by('-timestamp'))[:limit]
     for item in query:
-        response['items'].append(item.get_item())
+        response['items'].append(item.id)
 
     return JsonResponse(response)
 
