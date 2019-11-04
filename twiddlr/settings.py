@@ -80,11 +80,18 @@ WSGI_APPLICATION = 'twiddlr.wsgi.application'
 
 DATABASES = {
     'default': {
-        'ENGINE': 'djongo',
-        'NAME': 'twiddler',
-        'HOST': '130.245.168.176',
+        'ENGINE': 'django.db.backends.sqlite3',
+        'NAME': os.path.join(BASE_DIR, 'db.sqlite3'),
     }
 }
+
+# DATABASES = {
+#     'default': {
+#         'ENGINE': 'djongo',
+#         'NAME': 'twiddler',
+#         'HOST': '130.245.168.176',
+#     }
+# }
 
 
 # Password validation
@@ -136,7 +143,7 @@ EMAIL_HOST = 'localhost'
 EMAIL_PORT = 25
 
 # DEFAULT_FILE_STORAGE = 'django_mongodb_engine.storage.GridFSStorage'
-DEFAULT_FILE_STORAGE = 'database_files.storage.DatabaseStorage'
-DB_FILES_AUTO_EXPORT_DB_TO_FS = False
-MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
-MEDIA_URL = '/media/'
+# DEFAULT_FILE_STORAGE = 'database_files.storage.DatabaseStorage'
+# DB_FILES_AUTO_EXPORT_DB_TO_FS = False
+# MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
+# MEDIA_URL = '/media/'
