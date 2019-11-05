@@ -162,6 +162,7 @@ def user_profile(request, username):
     context = {
         "username": username,
         "joined": '',
+        "followed": False,
         "followers": 0,
         "following": 0,
         "items": [],
@@ -173,7 +174,8 @@ def user_profile(request, username):
         # todo: render a 404 page
         return JsonResponse({"status": "error"})
 
-    context['joined'] = profile.user.date_joined.strftime('%b %Y')
+    context['joined'] = profile.user.date_joined.strftime('%b %d, %Y')
+    context['followed'] = bool(request.user.username in profile.get_followers())
     context['followers'] = profile.count_followers
     context['following'] = profile.count_following
 
@@ -260,8 +262,9 @@ def user_following(request, username):
     return JsonResponse(response)
 
 @csrf_exempt
-# @require_http_methods(["POST"])
+@require_http_methods(["POST"])
 def follow_user(request):
+    print(request.COOKIES)
     response = {
         "status": "OK"
     }
@@ -278,7 +281,7 @@ def follow_user(request):
         profile_followed = Profile.objects.get(user__username=username)
         user_followed = User.objects.get(username=username)
     except (Profile.DoesNotExist, User.DoesNotExist):
-        return JsonResponse({"status": "error"})
+        return JsonResponse({"status": "error", "error": "why doesn't it work"})
 
     if follow:
         profile_following.add_following(user_followed.username)

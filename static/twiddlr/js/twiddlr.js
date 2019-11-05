@@ -4,6 +4,43 @@ $(function () {
         window.location.replace(page)
     }
 
+    $('form.follow').submit(function(event) {
+        event.preventDefault();
+
+        var data = $(this).serializeArray().reduce((dict, field) => {
+            dict[field.name] = field.value;
+            return dict;
+        }, {});
+
+        data['follow'] = false;
+
+        console.log(data)
+        
+        fetch("/follow", {
+            method: "POST",
+            mode: "cors",
+            cache: "no-cache",
+            credentials: "same-origin",
+            headers: {
+                "Content-Type": "application/json"
+            },
+            redirect: "follow",
+            referrer: "no-referrer",
+            body: JSON.stringify(data)
+        })
+        .then(response => {
+            return response.json();
+        })
+        .then(response => {
+            console.log(response);
+
+            if(response.status == "OK")
+                showPage('home')
+                // renderView();
+                // resetGame();
+        })
+    })
+
     $('#test').click(() => {
         var data = {
             "id": "093019215306"
@@ -181,6 +218,44 @@ $(function () {
                         </div>
                     `)
                 });
+            }
+        })
+    })
+
+    $('button.follow').click(function() {
+        var csrftoken = getCookie('csrftoken');
+        var params = this.id.split("-")
+        var username = params[1];
+        var follow = params[2] == "true" ? true : false;
+        var data = {
+            "username": username,
+            "follow": follow,
+        }
+
+        fetch("/follow", {
+            method: "POST",
+            mode: "cors",
+            cache: "no-cache",
+            credentials: "same-origin",
+            headers: {
+                "Content-Type": "application/json",
+                "X-CSRFToken": csrftoken
+            },
+            redirect: "follow",
+            referrer: "no-referrer",
+            body: JSON.stringify(data)
+        })
+        .then(response => {
+            return response.json();
+        })
+        .then(response => {
+            console.log(response);
+
+            if(response.status == "OK") {
+                $(this).prop("id", "follow" + username + !follow.toString());
+                $(this).toggleClass("btn-primary");
+                $(this).toggleClass("btn-danger");
+                $(this).html("Unfollow");
             }
         })
     })
