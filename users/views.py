@@ -205,7 +205,8 @@ def user_info(request, username):
 def user_profile_view(request, username):
     context = {
         "username": username,
-        "joined": '',
+        "joined": "",
+        "followed": False,
         "followers": 0,
         "following": 0,
         "items": [],
@@ -217,7 +218,8 @@ def user_profile_view(request, username):
         # todo: render a 404 page
         return JsonResponse({"status": "error"})
 
-    context['joined'] = profile.user.date_joined.strftime('%b %Y')
+    context['joined'] = profile.user.date_joined.strftime('%b %d %Y')
+    context['followed'] = bool(request.user.username in profile.get_followers())
     context['followers'] = profile.count_followers
     context['following'] = profile.count_following
 

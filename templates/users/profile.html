@@ -41,7 +41,13 @@
                 <button id="followingButton-{{ username }}" class="following btn btn-link text-decoration-none p-0 m-0" data-toggle="modal" data-target=".modal.following"><small class="text-muted"><i class="fas fa-user"></i> {{ following }}</button></small>
             </div>
         </div>
-        <button class="btn btn-primary rounded-pill px-5 mx-4">Follow</button>
+        {% if user.is_authenticated %}
+            {% if not followed %}
+                <button id="follow-{{ username }}-true" class="follow btn btn-primary rounded-pill px-5 mx-4">Follow</button>
+            {% else %}
+                <button id="follow-{{ username }}-false" class="follow btn btn-danger rounded-pill px-5 mx-4">Unfollow</button>
+            {% endif %}
+        {% endif %}
     </div>
     <!-- <div class="my-3 p-3 bg-white rounded shadow-sm">
             <h2 class="mb-3">Home</h2>   
