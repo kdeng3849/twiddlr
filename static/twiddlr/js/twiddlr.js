@@ -4,6 +4,7 @@ $(function () {
         window.location.replace(page)
     }
 
+<<<<<<< HEAD
     $('form.follow').submit(function(event) {
         event.preventDefault();
 
@@ -45,6 +46,8 @@ $(function () {
         })
     })
 
+=======
+>>>>>>> 2a27eb8... Added links to user profiles in items; removed test follow code
     $('#test').click(() => {
         var data = {
             "id": "093019215306"
