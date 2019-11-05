@@ -12,7 +12,11 @@ $(function () {
             return dict;
         }, {});
 
+<<<<<<< HEAD
         data['follow'] = false;
+=======
+        data['follow'] = true;
+>>>>>>> cb544e9... Added profile page; added view followers, following
 
         console.log(data)
         
@@ -222,6 +226,7 @@ $(function () {
         })
     })
 
+<<<<<<< HEAD
     $('button.follow').click(function() {
         var csrftoken = getCookie('csrftoken');
         var params = this.id.split("-")
@@ -260,6 +265,8 @@ $(function () {
         })
     })
 
+=======
+>>>>>>> cb544e9... Added profile page; added view followers, following
     $('#signupForm').submit(function(event) {
         event.preventDefault();
 
