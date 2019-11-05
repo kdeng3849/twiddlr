@@ -71,11 +71,11 @@ $(function () {
     })
 
     $('button.signup').click(() => {
-        showPage("signup");
+        showPage("/signup");
     })
 
     $('button.login').click(() => {
-        showPage("login");
+        showPage("/login");
     })
 
     $('button.reset').click(() => {
@@ -427,7 +427,7 @@ $(function () {
 
             if(response.status == "OK")
                 // renderView();
-                showPage("login");
+                showPage("/login");
         })
     })
 
