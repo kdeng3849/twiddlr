@@ -1,0 +1,87 @@
+{% extends "base.html" %}
+{% load static %}
+
+{% block content %}
+<!-- <div class="mx-5">
+    <div class="card border-white bg-white rounded shadow-sm">
+        <svg class="bd-placeholder-img rounded-top" xmlns="http://www.w3.org/2000/svg" preserveAspectRatio="xMidYMid slice" focusable="false" role="img" aria-label="Placeholder: 32x32"><title>Placeholder</title><rect width="100%" height="100%" fill="pink"/></svg>
+        <img src="{% static 'twiddlr/images/abstract-no-comments.png' %}" style="object-position: center top; object-fit: cover; width: 100%; height:250px;" class="card-img-top" alt="...">
+        <div class="card-body d-flex justify-content-between align-items-center bg-white">
+            <div class="d-flex align-items-center">
+                <svg class="bd-placeholder-img mr-2 rounded-circle float-left" width="48" height="48" xmlns="http://www.w3.org/2000/svg" preserveAspectRatio="xMidYMid slice" focusable="false" role="img" aria-label="Placeholder: 32x32"><title>Placeholder</title><rect width="100%" height="100%" fill="#e83e8c"/><text x="50%" y="50%" fill="#e83e8c" dy=".3em"></text></svg>
+                <div class="lh-100 mx-4">
+                    <h6 class="mb-0 lh-100">Bootstrap</h6>
+                    <small>Since 2011</small>
+                </div>
+                <div class="lh-100 mx-4">
+                    <h6 class="mb-0 lh-100">Followers</h6>
+                    <small>2011</small>
+                </div>
+                <div class="lh-100 mx-4">
+                    <h6 class="mb-0 lh-100">Following</h6>
+                    <small>2011</small>
+                </div>
+            </div>
+            <button class="btn btn-primary px-4 mx-4 rounded-pill">Follow</button>
+        </div>
+    </div> -->
+    <div class="d-flex justify-content-between align-items-center p-3 my-3 bg-white rounded shadow-sm">
+        <div class="d-flex align-items-center">
+            <svg class="bd-placeholder-img m-2 rounded-circle float-left" width="148" height="148" xmlns="http://www.w3.org/2000/svg" preserveAspectRatio="xMidYMid slice" focusable="false" role="img" aria-label="Placeholder: "><title>Placeholder</title><rect width="100%" height="100%" fill="#e83e8c"/><text x="50%" y="50%" fill="#e83e8c" dy=".3em"></text></svg>
+            <div class="lh-100 mx-4">
+                <h6 class="mb-0 lh-100 font-weight-bolder">@{{ username }}</h6>
+                <small class="text-muted">Joined {{ joined }}</small>
+            </div>
+            <div class="lh-100 mx-4 pl-5 border-left">
+                <h6 class="mb-0 lh-100">Followers</h6>
+                <button class="btn btn-link text-decoration-none p-0 m-0"><small class="text-muted"><i class="fas fa-user"></i> {{ followers }}</button></small>
+            </div>
+            <div class="lh-100 mx-4 pl-5 border-left">
+                <h6 class="mb-0 lh-100">Following</h6>
+                <button class="btn btn-link text-decoration-none p-0 m-0"><small class="text-muted"><i class="fas fa-user"></i> {{ following }}</button></small>
+            </div>
+        </div>
+        <button class="btn btn-primary rounded-pill px-5 mx-4">Follow</button>
+    </div>
+    <!-- <div class="my-3 p-3 bg-white rounded shadow-sm">
+            <h2 class="mb-3">Home</h2>   
+    </div> -->
+       
+    <div class="my-3 p-3 bg-white rounded shadow-sm">
+        <div class="d-flex justify-content-between align-items-end">
+            <h6 class="mb-0">Recent posts</h6>
+        </div>
+        <hr class="border-gray" />
+        {% for item in items %}
+        <div class="media text-muted pt-3">
+            <svg class="bd-placeholder-img mr-2 rounded-circle" width="32" height="32" xmlns="http://www.w3.org/2000/svg" preserveAspectRatio="xMidYMid slice" focusable="false" role="img" aria-label="Placeholder: 32x32"><title>Placeholder</title><rect width="100%" height="100%" fill="#e83e8c"/><text x="50%" y="50%" fill="#e83e8c" dy=".3em"></text></svg>
+            <p class="media-body pb-3 mb-0 small lh-125 border-bottom border-gray">
+                <strong class="d-block text-gray-dark">@{{ item.username }}</strong>
+                <span class="content-{{ item.id }}">{{ item.content }}</span>
+                <span class="d-block text-right">
+                    <button class="btn btn-sm btn-link" id="reply-{{ item.id }}" data-toggle="collapse" data-target="#post-reply-{{ item.id }}"><small><i class="fas fa-reply"></i></small></button>
+                    <button class="btn btn-sm btn-link" id="retweet-{{ item.id }}" data-toggle="collapse" data-target="#post-retweet-{{ item.id }}"><small><i class="fas fa-retweet"></i></small></button>
+                    <button class="like btn btn-sm btn-link text-decoration-none" id="like-{{ item.id }}"><small><i class="far fa-heart"></i> <span class="likes-{{ item.id }}">{{ item.property.likes }}</span></small></button>
+                </span>
+            </p>
+        </div>
+        <div id="post-reply-{{ item.id }}" class="collapse my-4">
+            <form class="post-reply ml-5 mr-2">{% csrf_token %}
+                <div class="form-group">
+                    <input type="text" name="content" class="form-control" placeholder="">
+                </div>
+                <div class="form-group">
+                    <div class="custom-file">
+                        <input type="file" name="media" class="custom-file-input rounded-pill px-3" id="customFile">
+                        <label class="custom-file-label" for="customFile">Choose file</label>
+                    </div>
+                </div>
+                <div class="d-flex justify-content-end">
+                    <button type="submit" class="post-reply btn btn-primary rounded-pill px-4">Reply</button>
+                </div>
+            </form>
+        </div>
+        {% endfor %}
+    </div>
+</div>
+{% endblock %}

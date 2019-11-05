@@ -159,6 +159,31 @@ def logout_user(request):
     return response
 
 def user_profile(request, username):
+    context = {
+        "username": username,
+        "joined": '',
+        "followers": 0,
+        "following": 0,
+        "items": [],
+    }
+
+    try:
+        profile = Profile.objects.get(user__username=username)
+    except Profile.DoesNotExist:
+        # todo: render a 404 page
+        return JsonResponse({"status": "error"})
+
+    context['joined'] = profile.user.date_joined.strftime('%b %Y')
+    context['followers'] = profile.count_followers
+    context['following'] = profile.count_following
+
+    query = list(Item.objects.filter(username=username).order_by('-timestamp')[:10])
+    for item in query:
+        context['items'].append(item.get_item())
+
+    return render(request, 'users/profile.html', context)
+
+def user_info(request, username):
     response = {
         "status": "OK",
         "user": {}
