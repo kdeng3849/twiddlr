@@ -1,11 +1,6 @@
 $(function () {
 
-    var winner = ' ';
-    var grid = [' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' '];
-
     function showPage(page) {
-        // $('.page').hide()
-        // $('#' + page).show()
         window.location.replace(page)
     }
 
@@ -112,6 +107,82 @@ $(function () {
             }
         })
         
+    })
+
+    $('button.followers').click(function() {
+        var username = this.id.split("-")[1];
+
+        fetch("/user/" + username + "/followers", {
+            method: "GET",
+            mode: "cors",
+            cache: "no-cache",
+            credentials: "same-origin",
+            headers: {
+                "Content-Type": "application/json"
+            },
+            redirect: "follow",
+            referrer: "no-referrer",
+        })
+        .then(response => {
+            return response.json();
+        })
+        .then(response => {
+            console.log(response);
+            $(".followers.modal-title").html('Followers')
+
+            if(response.status == "OK") {
+                $("div.followers.list").empty();
+
+                response.users.forEach((user) => {
+                    $("div.followers.list").append(`
+                        <div class="media text-muted pt-3">
+                            <svg class="bd-placeholder-img mr-2 rounded-circle" width="32" height="32" xmlns="http://www.w3.org/2000/svg" preserveAspectRatio="xMidYMid slice" focusable="false" role="img" aria-label="Placeholder: 32x32"><title>Placeholder</title><rect width="100%" height="100%" fill="#e83e8c"/><text x="50%" y="50%" fill="#e83e8c" dy=".3em"></text></svg>
+                            <p class="media-body pb-3 mb-0 small lh-125">
+                                <strong class="d-block text-gray-dark">@` + user + `</strong>
+                            </p>
+                        </div>
+                    `)
+                });
+            }
+        })
+    })
+
+    $('button.following').click(function() {
+        var username = this.id.split("-")[1];
+
+        fetch("/user/" + username + "/following", {
+            method: "GET",
+            mode: "cors",
+            cache: "no-cache",
+            credentials: "same-origin",
+            headers: {
+                "Content-Type": "application/json"
+            },
+            redirect: "follow",
+            referrer: "no-referrer",
+        })
+        .then(response => {
+            return response.json();
+        })
+        .then(response => {
+            console.log(response);
+            $(".following.modal-title").html('Following')
+
+            if(response.status == "OK") {
+                $("div.following.list").empty();
+
+                response.users.forEach((user) => {
+                    $("div.following.list").append(`
+                        <div class="media text-muted pt-3">
+                            <svg class="bd-placeholder-img mr-2 rounded-circle" width="32" height="32" xmlns="http://www.w3.org/2000/svg" preserveAspectRatio="xMidYMid slice" focusable="false" role="img" aria-label="Placeholder: 32x32"><title>Placeholder</title><rect width="100%" height="100%" fill="#e83e8c"/><text x="50%" y="50%" fill="#e83e8c" dy=".3em"></text></svg>
+                            <p class="media-body pb-3 mb-0 small lh-125">
+                                <strong class="d-block text-gray-dark">@` + user + `</strong>
+                            </p>
+                        </div>
+                    `)
+                });
+            }
+        })
     })
 
     $('#signupForm').submit(function(event) {

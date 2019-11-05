@@ -27,25 +27,22 @@
     </div> -->
     <div class="d-flex justify-content-between align-items-center p-3 my-3 bg-white rounded shadow-sm">
         <div class="d-flex align-items-center">
-            <svg class="bd-placeholder-img m-2 rounded-circle float-left" width="148" height="148" xmlns="http://www.w3.org/2000/svg" preserveAspectRatio="xMidYMid slice" focusable="false" role="img" aria-label="Placeholder: "><title>Placeholder</title><rect width="100%" height="100%" fill="#e83e8c"/><text x="50%" y="50%" fill="#e83e8c" dy=".3em"></text></svg>
+            <svg class="bd-placeholder-img m-2 rounded-circle float-left" width="128" height="128" xmlns="http://www.w3.org/2000/svg" preserveAspectRatio="xMidYMid slice" focusable="false" role="img" aria-label="Placeholder: "><title>Placeholder</title><rect width="100%" height="100%" fill="#e83e8c"/><text x="50%" y="50%" fill="#e83e8c" dy=".3em"></text></svg>
             <div class="lh-100 mx-4">
                 <h6 class="mb-0 lh-100 font-weight-bolder">@{{ username }}</h6>
                 <small class="text-muted">Joined {{ joined }}</small>
             </div>
             <div class="lh-100 mx-4 pl-5 border-left">
                 <h6 class="mb-0 lh-100">Followers</h6>
-                <button class="btn btn-link text-decoration-none p-0 m-0"><small class="text-muted"><i class="fas fa-user"></i> {{ followers }}</button></small>
+                <button id="followersButton-{{ username }}" class="followers btn btn-link text-decoration-none p-0 m-0" data-toggle="modal" data-target=".modal.followers"><small class="text-muted"><i class="fas fa-user"></i> {{ followers }}</button></small>
             </div>
             <div class="lh-100 mx-4 pl-5 border-left">
                 <h6 class="mb-0 lh-100">Following</h6>
-                <button class="btn btn-link text-decoration-none p-0 m-0"><small class="text-muted"><i class="fas fa-user"></i> {{ following }}</button></small>
+                <button id="followingButton-{{ username }}" class="following btn btn-link text-decoration-none p-0 m-0" data-toggle="modal" data-target=".modal.following"><small class="text-muted"><i class="fas fa-user"></i> {{ following }}</button></small>
             </div>
         </div>
         <button class="btn btn-primary rounded-pill px-5 mx-4">Follow</button>
     </div>
-    <!-- <div class="my-3 p-3 bg-white rounded shadow-sm">
-            <h2 class="mb-3">Home</h2>   
-    </div> -->
        
     <div class="my-3 p-3 bg-white rounded shadow-sm">
         <div class="d-flex justify-content-between align-items-end">
@@ -84,4 +81,25 @@
         {% endfor %}
     </div>
 </div>
+
+<!-- Followers Modal -->
+<div class="followers following modal fade" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="followers following modal-title"></h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <div class="followers following list"></div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+            </div>
+        </div>
+    </div>
+</div>
+
 {% endblock %}
