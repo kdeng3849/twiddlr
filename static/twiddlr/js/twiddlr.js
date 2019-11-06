@@ -153,6 +153,33 @@ $(function () {
         
     })
 
+    $('button.delete').click(function() {
+        var id = this.id.split("-")[1];
+
+        fetch("/item/" + id, {
+            method: "DELETE",
+            mode: "cors",
+            cache: "no-cache",
+            credentials: "same-origin",
+            headers: {
+                "Content-Type": "application/json"
+            },
+            redirect: "follow",
+            referrer: "no-referrer",
+        })
+        // .then(response => {
+        //     return response.json();
+        // })
+        .then(response => {
+            console.log(response);
+
+            if(response.status == 200) {
+                $('#item-' + id).remove()
+                $('#post-reply-' + id).remove()
+            }
+        })
+    })
+
     $('button.followers').click(function() {
         var username = this.id.split("-")[1];
 
