@@ -4,6 +4,7 @@ $(function () {
         window.location.replace(page)
     }
 
+<<<<<<< HEAD
     $('form.follow').submit(function(event) {
         event.preventDefault();
 
@@ -12,7 +13,11 @@ $(function () {
             return dict;
         }, {});
 
+<<<<<<< HEAD
         data['follow'] = false;
+=======
+        data['follow'] = true;
+>>>>>>> cb544e9... Added profile page; added view followers, following
 
         console.log(data)
         
@@ -41,6 +46,8 @@ $(function () {
         })
     })
 
+=======
+>>>>>>> 2a27eb8... Added links to user profiles in items; removed test follow code
     $('#test').click(() => {
         var data = {
             "id": "093019215306"
@@ -67,11 +74,11 @@ $(function () {
     })
 
     $('button.signup').click(() => {
-        showPage("signup");
+        showPage("/signup");
     })
 
     $('button.login').click(() => {
-        showPage("login");
+        showPage("/login");
     })
 
     $('button.reset').click(() => {
@@ -144,6 +151,33 @@ $(function () {
             }
         })
         
+    })
+
+    $('button.delete').click(function() {
+        var id = this.id.split("-")[1];
+
+        fetch("/item/" + id, {
+            method: "DELETE",
+            mode: "cors",
+            cache: "no-cache",
+            credentials: "same-origin",
+            headers: {
+                "Content-Type": "application/json"
+            },
+            redirect: "follow",
+            referrer: "no-referrer",
+        })
+        // .then(response => {
+        //     return response.json();
+        // })
+        .then(response => {
+            console.log(response);
+
+            if(response.status == 200) {
+                $('#item-' + id).remove()
+                $('#post-reply-' + id).remove()
+            }
+        })
     })
 
     $('button.followers').click(function() {
@@ -221,7 +255,50 @@ $(function () {
             }
         })
     })
+    
+    $('button.follow').click(function() {
+        var csrftoken = getCookie('csrftoken');
+        var params = this.id.split("-")
+        var username = params[1];
+        var follow = params[2] == "true" ? true : false;
+        var data = {
+            "username": username,
+            "follow": follow,
+        }
 
+        fetch("/follow", {
+            method: "POST",
+            mode: "cors",
+            cache: "no-cache",
+            credentials: "same-origin",
+            headers: {
+                "Content-Type": "application/json",
+                "X-CSRFToken": csrftoken
+            },
+            redirect: "follow",
+            referrer: "no-referrer",
+            body: JSON.stringify(data)
+        })
+        .then(response => {
+            return response.json();
+        })
+        .then(response => {
+            console.log(response);
+
+            if(response.status == "OK") {
+                // params[2] = !follow;
+                // $(this).prop("id", params.join("-"));
+                followButtonText = follow ? "Unfollow" : "Follow";
+                $(this).prop("id", "follow" + "-" + username + "-" + !follow);
+                $(this).toggleClass("btn-primary");
+                $(this).toggleClass("btn-danger");
+                $(this).html(followButtonText);
+            }
+        })
+    })
+
+
+<<<<<<< HEAD
     $('button.follow').click(function() {
         var csrftoken = getCookie('csrftoken');
         var params = this.id.split("-")
@@ -260,6 +337,8 @@ $(function () {
         })
     })
 
+=======
+>>>>>>> cb544e9... Added profile page; added view followers, following
     $('#signupForm').submit(function(event) {
         event.preventDefault();
 
@@ -378,7 +457,7 @@ $(function () {
 
             if(response.status == "OK")
                 // renderView();
-                showPage("login");
+                showPage("/login");
         })
     })
 
