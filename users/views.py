@@ -300,17 +300,23 @@ def follow_user(request):
     print(data)
     username = data.get('username')
     follow = data.get('follow')
-    #username = data['username']
-    #follow = data['follow']
+
+    # if user is trying to follow/unfollow themselves, do nothing
+    if request.user.username == username:
+        return JsonResponse(response)
 
     try:
         profile_following = Profile.objects.get(user__username=request.user.username)
         profile_followed = Profile.objects.get(user__username=username)
         user_followed = User.objects.get(username=username)
     except (Profile.DoesNotExist, User.DoesNotExist):
-        return JsonResponse({"status": "error", "error": "why doesn't it work"})
+        return JsonResponse({"status": "error"})
 
     if follow:
+        # if current user is already following the other user, do nothing
+        if request.user.username in profile_followed.get_followers():
+            return JsonResponse(response)
+
         profile_following.add_following(user_followed.username)
         profile_followed.add_follower(request.user.username)
 

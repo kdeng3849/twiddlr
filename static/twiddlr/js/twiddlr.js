@@ -249,6 +249,10 @@ $(function () {
                 $(this).toggleClass("btn-primary");
                 $(this).toggleClass("btn-danger");
                 $(this).html(followButtonText);
+
+                follwersCount = parseInt($("span.followers.count").html());
+                follwersCount = follow ? ++follwersCount : --follwersCount;
+                $("span.followers.count").html(follwersCount);
             }
         })
     })

@@ -34,14 +34,14 @@
             </div>
             <div class="lh-100 mx-4 pl-5 border-left">
                 <h6 class="mb-0 lh-100">Followers</h6>
-                <button id="followersButton-{{ username }}" class="followers btn btn-link text-decoration-none p-0 m-0" data-toggle="modal" data-target=".modal.followers"><small class="text-muted"><i class="fas fa-user"></i> {{ followers }}</button></small>
+                <button id="followersButton-{{ username }}" class="followers btn btn-link text-decoration-none p-0 m-0" data-toggle="modal" data-target=".modal.followers"><small class="text-muted"><i class="fas fa-user"></i> <span class="followers count">{{ followers }}</span></button></small>
             </div>
             <div class="lh-100 mx-4 pl-5 border-left">
                 <h6 class="mb-0 lh-100">Following</h6>
-                <button id="followingButton-{{ username }}" class="following btn btn-link text-decoration-none p-0 m-0" data-toggle="modal" data-target=".modal.following"><small class="text-muted"><i class="fas fa-user"></i> {{ following }}</button></small>
+                <button id="followingButton-{{ username }}" class="following btn btn-link text-decoration-none p-0 m-0" data-toggle="modal" data-target=".modal.following"><small class="text-muted"><i class="fas fa-user"></i> <span class="following count">{{ following }}</span></button></small>
             </div>
         </div>
-        {% if user.is_authenticated %}
+        {% if user.is_authenticated and user.username != username %}
             {% if not followed %}
                 <button id="follow-{{ username }}-true" class="follow btn btn-primary rounded-pill px-5 mx-4">Follow</button>
             {% else %}
@@ -49,9 +49,6 @@
             {% endif %}
         {% endif %}
     </div>
-    <!-- <div class="my-3 p-3 bg-white rounded shadow-sm">
-            <h2 class="mb-3">Home</h2>   
-    </div> -->
 
     <div class="my-3 p-3 bg-white rounded shadow-sm">
         <div class="d-flex justify-content-between align-items-end">
