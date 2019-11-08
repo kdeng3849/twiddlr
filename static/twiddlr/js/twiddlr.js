@@ -4,50 +4,6 @@ $(function () {
         window.location.replace(page)
     }
 
-<<<<<<< HEAD
-    $('form.follow').submit(function(event) {
-        event.preventDefault();
-
-        var data = $(this).serializeArray().reduce((dict, field) => {
-            dict[field.name] = field.value;
-            return dict;
-        }, {});
-
-<<<<<<< HEAD
-        data['follow'] = false;
-=======
-        data['follow'] = true;
->>>>>>> cb544e9... Added profile page; added view followers, following
-
-        console.log(data)
-        
-        fetch("/follow", {
-            method: "POST",
-            mode: "cors",
-            cache: "no-cache",
-            credentials: "same-origin",
-            headers: {
-                "Content-Type": "application/json"
-            },
-            redirect: "follow",
-            referrer: "no-referrer",
-            body: JSON.stringify(data)
-        })
-        .then(response => {
-            return response.json();
-        })
-        .then(response => {
-            console.log(response);
-
-            if(response.status == "OK")
-                showPage('home')
-                // renderView();
-                // resetGame();
-        })
-    })
-
-=======
->>>>>>> 2a27eb8... Added links to user profiles in items; removed test follow code
     $('#test').click(() => {
         var data = {
             "id": "093019215306"
@@ -298,47 +254,6 @@ $(function () {
     })
 
 
-<<<<<<< HEAD
-    $('button.follow').click(function() {
-        var csrftoken = getCookie('csrftoken');
-        var params = this.id.split("-")
-        var username = params[1];
-        var follow = params[2] == "true" ? true : false;
-        var data = {
-            "username": username,
-            "follow": follow,
-        }
-
-        fetch("/follow", {
-            method: "POST",
-            mode: "cors",
-            cache: "no-cache",
-            credentials: "same-origin",
-            headers: {
-                "Content-Type": "application/json",
-                "X-CSRFToken": csrftoken
-            },
-            redirect: "follow",
-            referrer: "no-referrer",
-            body: JSON.stringify(data)
-        })
-        .then(response => {
-            return response.json();
-        })
-        .then(response => {
-            console.log(response);
-
-            if(response.status == "OK") {
-                $(this).prop("id", "follow" + username + !follow.toString());
-                $(this).toggleClass("btn-primary");
-                $(this).toggleClass("btn-danger");
-                $(this).html("Unfollow");
-            }
-        })
-    })
-
-=======
->>>>>>> cb544e9... Added profile page; added view followers, following
     $('#signupForm').submit(function(event) {
         event.preventDefault();
 
@@ -490,8 +405,9 @@ $(function () {
             .then(response => {
                 console.log(response);
                 
-                // if(response.status == "OK")
+                if(response.status == "OK") {
                     
+                }
             })
         })
     }
