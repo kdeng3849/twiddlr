@@ -26,6 +26,7 @@
             <!-- <h6 class="border-bottom border-gray pb-2 mb-0">Recent posts</h6> -->
             <h6 class="mb-0">Recent posts</h6>
             <form action="/search" class="search form-inline">
+                <button class="btn btn-link btn-sm" type="button" data-toggle="modal" data-target=".modal.search">Advanced</button>
                 <div class="input-group">
                     <input class="form-control" type="search" name="search" placeholder="Search">
                     <div class="input-group-append">
@@ -70,4 +71,52 @@
         {% endfor %}
     </div>
 </div>
+
+<!-- Advanced Search Modal -->
+<div class="search modal fade" tabindex="-1" role="dialog">
+    <div class="modal-dialog modal-dialog-centered" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="followers following modal-title">Search by</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <!-- <div class="followers following list"></div> -->
+                <form class="search-advanced">
+                    <div class="form-group">
+                        <label for="searchKeywords">Keywords</label>
+                        <input name="q" type="text" class="form-control" id="searchKeywords" placeholder="">
+                        <!-- <small class="form-text text-muted px-1">Items containing any of these words</small> -->
+                    </div>
+                    <div class="form-group custom-control custom-checkbox float-right">
+                            <input name="following" type="checkbox" class="custom-control-input" id="searchFollowing">
+                            <label class="custom-control-label" for="searchFollowing">Only users you follow</label>
+                        </div>
+                    <div class="form-group">
+                        <label for="searchUsername">User</label>
+                        <input name="username" type="text" class="form-control" id="searchUsername" placeholder="">
+                        <!-- <small class="form-text text-muted px-1">Items authored by this user</small> -->
+                    </div>
+                    <!-- <div class="form-group">
+                        <label for="searchFollowing">Following</label>
+                        <input type="text" class="form-control" id="searchFollowing" placeholder="Username">
+                    </div> -->
+                    <div class="form-group">
+                        <label for="searchTimestamp">Timestamp</label>
+                        <input name="timestamp" type="text" class="form-control" id="searchTimestamp" placeholder="">
+                        <small class="form-text text-muted px-1">Items from this timestamp (unix time) and earlier</small>
+                    </div>
+
+                </form>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                <button type="submit" class="btn btn-primary">Search</button>
+            </div>
+        </div>
+    </div>
+</div>
+
 {% endblock %}
