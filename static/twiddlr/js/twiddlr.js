@@ -284,7 +284,41 @@ $(function () {
             console.log(response);
 
             if(response.status == "OK") {
-
+                $('.modal.search').modal('hide');
+                $('.items-list').empty();
+                response.items.forEach(item => {
+                    // deleteItemButton = '<button class="delete btn btn-sm btn-link text-danger" id="delete-{{ item.id }}"><small><i class="fas fa-trash-alt"></i></small></button>'
+                    $('.items-list-header').html('Search results');
+                    $('.items-list').append(`
+                    <div id="item-` + item.id + `" class="media text-muted pt-3">
+                    <svg class="bd-placeholder-img mr-2 rounded-circle" width="32" height="32" xmlns="http://www.w3.org/2000/svg" preserveAspectRatio="xMidYMid slice" focusable="false" role="img" aria-label="Placeholder: 32x32"><title>Placeholder</title><rect width="100%" height="100%" fill="#e83e8c"/><text x="50%" y="50%" fill="#e83e8c" dy=".3em">32x32</text></svg>
+                    <p class="media-body pb-3 mb-0 small lh-125 border-bottom border-gray">
+                        <a class="text-dark text-decoration-none" href="/user/` + item.username + `/profile"><strong class="d-block text-gray-dark">@` + item.username + `</strong></a>
+                        <span class="content-` + item.id + `">` + item.content + `</span>
+                        <span class="d-block text-right">
+                            <button class="btn btn-sm btn-link" id="reply-` + item.id + `" data-toggle="collapse" data-target="#post-reply-` + item.id + `"><small><i class="fas fa-reply"></i></small></button>
+                            <button class="btn btn-sm btn-link" id="retweet-` + item.id + `" data-toggle="collapse" data-target="#post-retweet-` + item.id + `"><small><i class="fas fa-retweet"></i></small></button>
+                            <button class="like btn btn-sm btn-link" id="like-` + item.id + `"><small><i class="far fa-heart"></i> <span class="likes-` + item.id + `">` + item.property.likes + `</span></small></button>
+                        </span>
+                    </p>
+                    </div>
+                    <div id="post-reply-` + item.id + `" class="collapse my-4">
+                        <form class="post-reply ml-5 mr-2">{% csrf_token %}
+                            <div class="form-group">
+                                <input type="text" name="content" class="form-control" placeholder="">
+                            </div>
+                            <div class="form-group">
+                                <div class="custom-file">
+                                    <input type="file" name="media" class="custom-file-input rounded-pill px-3" id="customFile">
+                                    <label class="custom-file-label" for="customFile">Choose file</label>
+                                </div>
+                            </div>
+                            <div class="d-flex justify-content-end">
+                                <button type="submit" class="post-reply btn btn-primary rounded-pill px-4">Reply</button>
+                            </div>
+                        </form>
+                    </div>`);
+                });
             }
         })
     })
