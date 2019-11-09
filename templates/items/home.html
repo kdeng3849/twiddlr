@@ -28,7 +28,7 @@
             <form action="/search" class="search form-inline">
                 <button class="btn btn-link btn-sm" type="button" data-toggle="modal" data-target=".modal.search">Advanced</button>
                 <div class="input-group">
-                    <input class="form-control" type="search" name="search" placeholder="Search">
+                    <input class="form-control" type="search" name="q" placeholder="Search">
                     <div class="input-group-append">
                         <button class="btn btn-primary my-2 my-sm-0" type="submit"><i class="fas fa-search"></i></button>
                     </div>
@@ -84,7 +84,7 @@
                 <span aria-hidden="true">&times;</span>
                 </button>
             </div>
-            <form class="search-advanced" action="/search" method="POST">
+            <form class="search advanced" action="/search" method="POST">
                 <div class="modal-body">
                     <div class="form-group">
                         <label for="searchKeywords">Keywords</label>

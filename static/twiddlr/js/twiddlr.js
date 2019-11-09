@@ -257,7 +257,7 @@ $(function () {
         })
     })
 
-    $('form.search-advanced').submit(function(event) {
+    $('form.search').submit(function(event) {
         event.preventDefault();
 
         var data = $(this).serializeArray().reduce((dict, field) => {
