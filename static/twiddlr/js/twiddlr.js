@@ -257,6 +257,37 @@ $(function () {
         })
     })
 
+    $('form.search-advanced').submit(function(event) {
+        event.preventDefault();
+
+        var data = $(this).serializeArray().reduce((dict, field) => {
+            dict[field.name] = field.value;
+            return dict;
+        }, {});
+
+        fetch("/search", {
+            method: "POST",
+            mode: "cors",
+            cache: "no-cache",
+            credentials: "same-origin",
+            headers: {
+                "Content-Type": "application/json"
+            },
+            redirect: "follow",
+            referrer: "no-referrer",
+            body: JSON.stringify(data)
+        })
+        .then(response => {
+            return response.json();
+        })
+        .then(response => {
+            console.log(response);
+
+            if(response.status == "OK") {
+
+            }
+        })
+    })
 
     $('#signupForm').submit(function(event) {
         event.preventDefault();

@@ -82,9 +82,8 @@
                 <span aria-hidden="true">&times;</span>
                 </button>
             </div>
-            <div class="modal-body">
-                <!-- <div class="followers following list"></div> -->
-                <form class="search-advanced">
+            <form class="search-advanced" action="/search" method="POST">
+                <div class="modal-body">
                     <div class="form-group">
                         <label for="searchKeywords">Keywords</label>
                         <input name="q" type="text" class="form-control" id="searchKeywords" placeholder="">
@@ -108,13 +107,12 @@
                         <input name="timestamp" type="text" class="form-control" id="searchTimestamp" placeholder="">
                         <small class="form-text text-muted px-1">Items from this timestamp (unix time) and earlier</small>
                     </div>
-
-                </form>
-            </div>
-            <div class="modal-footer">
-                <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-                <button type="submit" class="btn btn-primary">Search</button>
-            </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                    <button type="submit" class="btn btn-primary">Search</button>
+                </div>
+            </form>
         </div>
     </div>
 </div>
