@@ -107,7 +107,10 @@ def search(request):
         'items': [],
     }
 
-    query = Item.objects.filter(timestamp__lte=timestamp).order_by('-timestamp')
+    try:
+        query = Item.objects.filter(timestamp__lte=timestamp).order_by('-timestamp')
+    except ValueError:
+        query = Item.objects.filter(timestamp__lte=time.time()).order_by('-timestamp')
 
     if q:
         keywords_query = Item.objects.none()

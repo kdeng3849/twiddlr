@@ -89,19 +89,17 @@
                         <input name="q" type="text" class="form-control" id="searchKeywords" placeholder="">
                         <!-- <small class="form-text text-muted px-1">Items containing any of these words</small> -->
                     </div>
+                    {% if user.is_authenticated %}
                     <div class="form-group custom-control custom-checkbox float-right">
-                            <input name="following" type="checkbox" class="custom-control-input" id="searchFollowing">
-                            <label class="custom-control-label" for="searchFollowing">Only users you follow</label>
-                        </div>
+                        <input name="following" type="checkbox" class="custom-control-input" id="searchFollowing">
+                        <label class="custom-control-label" for="searchFollowing">Only users you follow</label>
+                    </div>
+                    {% endif %}
                     <div class="form-group">
                         <label for="searchUsername">User</label>
                         <input name="username" type="text" class="form-control" id="searchUsername" placeholder="">
                         <!-- <small class="form-text text-muted px-1">Items authored by this user</small> -->
                     </div>
-                    <!-- <div class="form-group">
-                        <label for="searchFollowing">Following</label>
-                        <input type="text" class="form-control" id="searchFollowing" placeholder="Username">
-                    </div> -->
                     <div class="form-group">
                         <label for="searchTimestamp">Timestamp</label>
                         <input name="timestamp" type="text" class="form-control" id="searchTimestamp" placeholder="">
