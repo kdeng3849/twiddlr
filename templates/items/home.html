@@ -24,10 +24,11 @@
     <div class="my-3 p-3 bg-white rounded shadow-sm">
         <div class="d-flex justify-content-between align-items-end">
             <!-- <h6 class="border-bottom border-gray pb-2 mb-0">Recent posts</h6> -->
-            <h6 class="mb-0">Recent posts</h6>
+            <h6 class="items-list-header mb-0">Recent posts</h6>
             <form action="/search" class="search form-inline">
+                <button class="btn btn-link btn-sm" type="button" data-toggle="modal" data-target=".modal.search">Advanced</button>
                 <div class="input-group">
-                    <input class="form-control" type="search" name="search" placeholder="Search">
+                    <input class="form-control" type="search" name="q" placeholder="Search">
                     <div class="input-group-append">
                         <button class="btn btn-primary my-2 my-sm-0" type="submit"><i class="fas fa-search"></i></button>
                     </div>
@@ -35,39 +36,85 @@
             </form>
         </div>
         <hr class="border-gray" />
-        {% for item in items %}
-        <div id="item-{{ item.id }}" class="media text-muted pt-3">
-            <svg class="bd-placeholder-img mr-2 rounded-circle" width="32" height="32" xmlns="http://www.w3.org/2000/svg" preserveAspectRatio="xMidYMid slice" focusable="false" role="img" aria-label="Placeholder: 32x32"><title>Placeholder</title><rect width="100%" height="100%" fill="#e83e8c"/><text x="50%" y="50%" fill="#e83e8c" dy=".3em">32x32</text></svg>
-            <p class="media-body pb-3 mb-0 small lh-125 border-bottom border-gray">
-                <a class="text-dark text-decoration-none" href="/user/{{ item.username }}/profile"><strong class="d-block text-gray-dark">@{{ item.username }}</strong></a>
-                <span class="content-{{ item.id }}">{{ item.content }}</span>
-                <span class="d-block text-right">
-                    {% if user.username == item.username %}
-                        <button class="delete btn btn-sm btn-link text-danger" id="delete-{{ item.id }}"><small><i class="fas fa-trash-alt"></i></small></button>
-                    {% endif %}
-                    <button class="btn btn-sm btn-link" id="reply-{{ item.id }}" data-toggle="collapse" data-target="#post-reply-{{ item.id }}"><small><i class="fas fa-reply"></i></small></button>
-                    <button class="btn btn-sm btn-link" id="retweet-{{ item.id }}" data-toggle="collapse" data-target="#post-retweet-{{ item.id }}"><small><i class="fas fa-retweet"></i></small></button>
-                    <button class="like btn btn-sm btn-link" id="like-{{ item.id }}"><small><i class="far fa-heart"></i> <span class="likes-{{ item.id }}">{{ item.property.likes }}</span></small></button>
-                </span>
-            </p>
+        <div class="items-list">
+            {% for item in items %}
+            <div id="item-{{ item.id }}" class="media text-muted pt-3">
+                <svg class="bd-placeholder-img mr-2 rounded-circle" width="32" height="32" xmlns="http://www.w3.org/2000/svg" preserveAspectRatio="xMidYMid slice" focusable="false" role="img" aria-label="Placeholder: 32x32"><title>Placeholder</title><rect width="100%" height="100%" fill="#e83e8c"/><text x="50%" y="50%" fill="#e83e8c" dy=".3em">32x32</text></svg>
+                <p class="media-body pb-3 mb-0 small lh-125 border-bottom border-gray">
+                    <strong class="d-block"><a class="text-dark text-decoration-none" href="/user/{{ item.username }}/profile">@{{ item.username }}</a></strong>
+                    <span class="content-{{ item.id }}">{{ item.content }}</span>
+                    <span class="d-block text-right">
+                        {% if user.username == item.username %}
+                            <button class="delete btn btn-sm btn-link text-danger" id="delete-{{ item.id }}"><small><i class="fas fa-trash-alt"></i></small></button>
+                        {% endif %}
+                        <button class="btn btn-sm btn-link" id="reply-{{ item.id }}" data-toggle="collapse" data-target="#post-reply-{{ item.id }}"><small><i class="fas fa-reply"></i></small></button>
+                        <button class="btn btn-sm btn-link" id="retweet-{{ item.id }}" data-toggle="collapse" data-target="#post-retweet-{{ item.id }}"><small><i class="fas fa-retweet"></i></small></button>
+                        <button class="like btn btn-sm btn-link" id="like-{{ item.id }}"><small><i class="far fa-heart"></i> <span class="likes-{{ item.id }}">{{ item.property.likes }}</span></small></button>
+                    </span>
+                </p>
+            </div>
+            <div id="post-reply-{{ item.id }}" class="collapse my-4">
+                <form class="post-reply ml-5 mr-2">{% csrf_token %}
+                    <div class="form-group">
+                        <input type="text" name="content" class="form-control" placeholder="">
+                    </div>
+                    <div class="form-group">
+                        <div class="custom-file">
+                            <input type="file" name="media" class="custom-file-input rounded-pill px-3" id="customFile">
+                            <label class="custom-file-label" for="customFile">Choose file</label>
+                        </div>
+                    </div>
+                    <div class="d-flex justify-content-end">
+                        <button type="submit" class="post-reply btn btn-primary rounded-pill px-4">Reply</button>
+                    </div>
+                </form>
+            </div>
+            {% endfor %}
         </div>
-        <div id="post-reply-{{ item.id }}" class="collapse my-4">
-            <form class="post-reply ml-5 mr-2">{% csrf_token %}
-                <div class="form-group">
-                    <input type="text" name="content" class="form-control" placeholder="">
-                </div>
-                <div class="form-group">
-                    <div class="custom-file">
-                        <input type="file" name="media" class="custom-file-input rounded-pill px-3" id="customFile">
-                        <label class="custom-file-label" for="customFile">Choose file</label>
+    </div>
+</div>
+
+<!-- Advanced Search Modal -->
+<div class="search modal fade" tabindex="-1" role="dialog">
+    <div class="modal-dialog modal-dialog-centered" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="followers following modal-title">Search by</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <form class="search advanced" action="/search" method="POST">
+                <div class="modal-body">
+                    <div class="form-group">
+                        <label for="searchKeywords">Keywords</label>
+                        <input name="q" type="text" class="form-control" id="searchKeywords" placeholder="">
+                        <!-- <small class="form-text text-muted px-1">Items containing any of these words</small> -->
+                    </div>
+                    {% if user.is_authenticated %}
+                    <div class="form-group custom-control custom-checkbox float-right">
+                        <input name="following" type="checkbox" class="custom-control-input" id="searchFollowing">
+                        <label class="custom-control-label" for="searchFollowing">Only users you follow</label>
+                    </div>
+                    {% endif %}
+                    <div class="form-group">
+                        <label for="searchUsername">User</label>
+                        <input name="username" type="text" class="form-control" id="searchUsername" placeholder="">
+                        <!-- <small class="form-text text-muted px-1">Items authored by this user</small> -->
+                    </div>
+                    <div class="form-group">
+                        <label for="searchTimestamp">Timestamp</label>
+                        <input name="timestamp" type="text" class="form-control" id="searchTimestamp" placeholder="">
+                        <small class="form-text text-muted px-1">Items from this timestamp (unix time) and earlier</small>
                     </div>
                 </div>
-                <div class="d-flex justify-content-end">
-                    <button type="submit" class="post-reply btn btn-primary rounded-pill px-4">Reply</button>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                    <button type="submit" class="btn btn-primary">Search</button>
                 </div>
             </form>
         </div>
-        {% endfor %}
     </div>
 </div>
+
 {% endblock %}
