@@ -19,7 +19,7 @@ def home(request):
     for item in query:
         context['items'].append(item.get_item())
 
-    print(request.COOKIES)
+    # print(request.COOKIES)
     return render(request, 'items/home.html', context)
 
 @csrf_exempt
