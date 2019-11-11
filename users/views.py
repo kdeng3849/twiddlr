@@ -55,12 +55,19 @@ def add_user(request):
 
         # create user
         user = User.objects.create_user(username=username, password=password, email=email, is_active=False)
-        user.save()
+        #user.save()
+        try:
+            print("try 1", user, user.email)
+            user.save()
+        except:
+            user.delete()
+            print("try 2", user, user.email)
+            user.save()
 
         current_site = get_current_site(request)
         mail_subject = 'Activate your TTT account'
         key = account_activation_token.make_token(user)
-        print(key) ###
+        print(user, user.email, key) ###
         # message = render_to_string('users/email_verification.html', {
         #     'user': user,
         #     'domain': current_site.domain,
@@ -109,16 +116,27 @@ def verify(request):
     except User.DoesNotExist:
         user = None
 
+    print(data)
+    print(user)
+
     # if user is not None and account_activation_token.check_token(user, key):
     if user is not None and verify_key(user, key):
         user.is_active = True
-        user.save()
+        #user.save()
+        try:
+            user.save()
+        except:
+            user.delete()
+            user.save()
 
         profile = Profile(user=user)
         profile.save()
+        
+        print("verify ok")
 
         return JsonResponse({"status": "OK"})
-
+    
+    print("verify not ok")
     return JsonResponse({"status": "error"})
 
 @csrf_exempt
@@ -194,12 +212,14 @@ def user_info(request, username):
     try:
         profile = Profile.objects.get(user__username=username)
     except Profile.DoesNotExist:
+        print("get user not ok")
         return JsonResponse({"status": "error"})
 
     response['user']['email'] = profile.user.email
     response['user']['followers'] = profile.count_followers()
     response['user']['following'] = profile.count_following()
 
+    print("get user ok")
     return JsonResponse(response)
 
 def user_profile_view(request, username):
