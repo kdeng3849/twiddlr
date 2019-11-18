@@ -1,3 +1,4 @@
+import cassandra.cluster
 import time
 import json
 import uuid
@@ -9,6 +10,10 @@ from django.views.decorators.http import require_http_methods
 
 from users.models import Profile
 from .models import Item
+
+cluster = cassandra.cluster.Cluster(['127.0.0.1'])
+session = cluster.connect()
+session.set_keyspace('hw6')
 
 def home(request):
     context = {

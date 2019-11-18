@@ -5,14 +5,14 @@
 <div class="mx-5">
     {% if user.is_authenticated %}
     <div class="my-3 p-3 bg-white rounded shadow-sm">
-        <form class="post-new">{% csrf_token %}
+        <form enctype="multipart/form-data" class="post-new">{% csrf_token %}
             <h2 class="mb-3">Home</h2>
             <div class="form-group">
                 <input type="text" name="content" class="form-control" placeholder="What's happening?">
             </div>
             <div class="form-group">
                 <div class="custom-file">
-                    <input type="file" name="media" class="custom-file-input" id="customFile">
+                    <input type="file" name="media" class="custom-file-input" multiple>
                     <label class="custom-file-label" for="customFile">Choose file</label>
                 </div>
             </div>
