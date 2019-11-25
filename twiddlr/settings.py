@@ -89,6 +89,10 @@ DATABASES = {
     }
 }
 
+CASSANDRA_DRIVER_KWARGS = {
+    'protocol_version': 4
+}
+
 # DATABASES = {
 #     'default': {
 #         'ENGINE': 'djongo',

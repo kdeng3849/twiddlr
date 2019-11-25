@@ -425,8 +425,29 @@ $(function () {
                 dict[field.name] = field.value;
                 return dict;
             }, {});
+
+            // var data = new FormData();
+            // var childType = type == 'new' ? null : type;
+            // data.append("childType", childType);
             data['childType'] = type=='new' ? null : type;
+            // data['media'] = []
+
+            var file = $("input.file.new")[0].files[0];
+            data['media'] = file
+            // var files = $("input.file.new")[0].files;
+            // console.log(files)
+
+            // for (let i = 0; i < files.length; i++) {
+            //     let file = files[i]
             
+            //     // data.append('files[]', file)
+            //     data['media'][i] = file;
+            // }
+
+            // data['media'] = file;
+            // console.log(file)
+            
+            console.log(data)
             fetch("/additem", {
                 method: "POST",
                 mode: "cors",

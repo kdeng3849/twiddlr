@@ -1,4 +1,5 @@
 import cassandra.cluster
+import base64
 import time
 import json
 import uuid
@@ -11,9 +12,9 @@ from django.views.decorators.http import require_http_methods
 from users.models import Profile
 from .models import Item
 
-cluster = cassandra.cluster.Cluster(['127.0.0.1'])
-session = cluster.connect()
-session.set_keyspace('hw6')
+# cluster = cassandra.cluster.Cluster(['130.245.169.94'])
+# session = cluster.connect()
+# session.set_keyspace('twiddlr')
 
 def home(request):
     context = {
@@ -28,11 +29,32 @@ def home(request):
     return render(request, 'items/home.html', context)
 
 @csrf_exempt
+def add_media(request):
+    # print(json.loads(request.body, encoding='utf-8'))
+    print(request.FILES)
+    media = request.FILES['media']
+
+    # print(media.read())
+    if media:
+        # cluster = cassandra.cluster.Cluster(['130.245.169.94'])
+        cluster = cassandra.cluster.Cluster(['127.0.0.1'])
+        session = cluster.connect()
+        session.set_keyspace('twiddlr')
+
+        media_id = str(uuid.uuid4().node)
+        session.execute("INSERT INTO media (id, file_contents) VALUES (%s, %s)", [media_id, media.read()])
+        cluster.shutdown()
+
+    return JsonResponse({'status': 'OK'})
+
+@csrf_exempt
 def add_item(request):
     if not request.user.is_authenticated:
         return JsonResponse({'status': 'error'})
 
     data = json.loads(request.body, encoding='utf-8')
+    print("files", request.FILES)
+    # media = request.FILES['media']
 
     try:
         username = request.user.username
@@ -52,6 +74,16 @@ def add_item(request):
     # item.content = content
     item.save()
     # print(type(item.id))
+    
+    # print(media)
+    # if media:
+    #     cluster = cassandra.cluster.Cluster(['130.245.169.94'])
+    #     session = cluster.connect()
+    #     session.set_keyspace('twiddlr')
+
+    #     media_id = uuid.uuid4().node
+    #     session.execute("INSERT INTO foo (id, file_contents) VALUES (%s, %s)", [media_id, media])
+    #     cluster.shutdown()
 
     context = {
         'status': 'OK',
