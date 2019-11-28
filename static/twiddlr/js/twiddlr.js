@@ -5,28 +5,29 @@ $(function () {
     }
 
     $('#test').click(() => {
-        var data = {
-            "id": "093019215306"
-        }
+        addMedia();
+        // var data = {
+        //     "id": "093019215306"
+        // }
         
-        fetch("/getgame", {
-            method: "POST",
-            mode: "cors",
-            cache: "no-cache",
-            credentials: "same-origin",
-            headers: {
-                "Content-Type": "application/json"
-            },
-            redirect: "follow",
-            referrer: "no-referrer",
-            body: JSON.stringify(data)
-        })
-        .then(response => {
-            return response.json();
-        })
-        .then(response => {
-            console.log(response);
-        })
+        // fetch("/getgame", {
+        //     method: "POST",
+        //     mode: "cors",
+        //     cache: "no-cache",
+        //     credentials: "same-origin",
+        //     headers: {
+        //         "Content-Type": "application/json"
+        //     },
+        //     redirect: "follow",
+        //     referrer: "no-referrer",
+        //     body: JSON.stringify(data)
+        // })
+        // .then(response => {
+        //     return response.json();
+        // })
+        // .then(response => {
+        //     console.log(response);
+        // })
     })
 
     $('button.signup').click(() => {
@@ -42,6 +43,8 @@ $(function () {
     })
 
     $('button.post-new').click(() => {
+        console.log("hello")
+        // addMedia();
         addItem('new');
     })
 
@@ -416,6 +419,51 @@ $(function () {
                 showPage("/login");
         })
     })
+
+    function addMedia() {
+        var data = new FormData();
+        var csrftoken = getCookie('csrftoken')
+        var file = $("input.file.new")[0].files[0];
+        // data = {}
+        // data['media'] = file
+        data.append('media', file);
+        
+        console.log(data)
+        fetch("/addmedia", {
+            method: "POST",
+            mode: "cors",
+            cache: "no-cache",
+            credentials: "same-origin",
+            headers: {
+                // "Content-Type": "multipart/form-data",
+                "X-CSRFToken": csrftoken
+            },
+            redirect: "follow",
+            referrer: "no-referrer",
+            body: data
+        })
+        .then(response => {
+            return response.json();
+        })
+        .then(response => {
+            console.log(response);
+            
+            if(response.status == "OK") {
+                console.log(response.id)
+                // item = {
+                //     "id": response.id,
+                //     "username": getCookie("username"),
+                //     "property": {
+                //         "likes": 0,
+                //     },
+                //     "retweeted": 0,
+                //     "content": data.content,
+                //     // "timestamp":
+                // }
+                // $('.items-list').prepend(renderItem(item, true));
+            }
+        })
+    }
 
     function addItem(type) {
         $('form.post-' + type).submit(function(event) {
