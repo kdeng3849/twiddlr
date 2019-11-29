@@ -30,6 +30,10 @@ def home(request):
 
 @csrf_exempt
 def add_media(request):
+    response = {
+        'status': 'OK',
+        'id': '',
+    }
     # print(json.loads(request.body, encoding='utf-8'))
     print(request.FILES)
     media = request.FILES['media']
@@ -45,7 +49,9 @@ def add_media(request):
         session.execute("INSERT INTO media (id, file_contents) VALUES (%s, %s)", [media_id, media.read()])
         cluster.shutdown()
 
-    return JsonResponse({'status': 'OK'})
+        response['id'] = media_id
+
+    return JsonResponse(response)
 
 @csrf_exempt
 def add_item(request):
@@ -53,8 +59,6 @@ def add_item(request):
         return JsonResponse({'status': 'error'})
 
     data = json.loads(request.body, encoding='utf-8')
-    print("files", request.FILES)
-    # media = request.FILES['media']
 
     try:
         username = request.user.username
@@ -74,16 +78,6 @@ def add_item(request):
     # item.content = content
     item.save()
     # print(type(item.id))
-    
-    # print(media)
-    # if media:
-    #     cluster = cassandra.cluster.Cluster(['130.245.169.94'])
-    #     session = cluster.connect()
-    #     session.set_keyspace('twiddlr')
-
-    #     media_id = uuid.uuid4().node
-    #     session.execute("INSERT INTO foo (id, file_contents) VALUES (%s, %s)", [media_id, media])
-    #     cluster.shutdown()
 
     context = {
         'status': 'OK',

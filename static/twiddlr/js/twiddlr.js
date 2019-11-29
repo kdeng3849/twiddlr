@@ -4,31 +4,31 @@ $(function () {
         window.location.replace(page)
     }
 
-    $('#test').click(() => {
-        addMedia();
-        // var data = {
-        //     "id": "093019215306"
-        // }
+    // $('#test').click(() => {
+    //     addMedia();
+    //     // var data = {
+    //     //     "id": "093019215306"
+    //     // }
         
-        // fetch("/getgame", {
-        //     method: "POST",
-        //     mode: "cors",
-        //     cache: "no-cache",
-        //     credentials: "same-origin",
-        //     headers: {
-        //         "Content-Type": "application/json"
-        //     },
-        //     redirect: "follow",
-        //     referrer: "no-referrer",
-        //     body: JSON.stringify(data)
-        // })
-        // .then(response => {
-        //     return response.json();
-        // })
-        // .then(response => {
-        //     console.log(response);
-        // })
-    })
+    //     // fetch("/getgame", {
+    //     //     method: "POST",
+    //     //     mode: "cors",
+    //     //     cache: "no-cache",
+    //     //     credentials: "same-origin",
+    //     //     headers: {
+    //     //         "Content-Type": "application/json"
+    //     //     },
+    //     //     redirect: "follow",
+    //     //     referrer: "no-referrer",
+    //     //     body: JSON.stringify(data)
+    //     // })
+    //     // .then(response => {
+    //     //     return response.json();
+    //     // })
+    //     // .then(response => {
+    //     //     console.log(response);
+    //     // })
+    // })
 
     $('button.signup').click(() => {
         showPage("/signup");
@@ -43,8 +43,14 @@ $(function () {
     })
 
     $('button.post-new').click(() => {
-        console.log("hello")
-        // addMedia();
+        addMedia().then(response => {
+            console.log(response);
+
+            if(response.status == "OK") {
+                console.log(response.id);
+            }
+        })
+
         addItem('new');
     })
 
@@ -429,7 +435,7 @@ $(function () {
         data.append('media', file);
         
         console.log(data)
-        fetch("/addmedia", {
+        return fetch("/addmedia", {
             method: "POST",
             mode: "cors",
             cache: "no-cache",
@@ -444,24 +450,6 @@ $(function () {
         })
         .then(response => {
             return response.json();
-        })
-        .then(response => {
-            console.log(response);
-            
-            if(response.status == "OK") {
-                console.log(response.id)
-                // item = {
-                //     "id": response.id,
-                //     "username": getCookie("username"),
-                //     "property": {
-                //         "likes": 0,
-                //     },
-                //     "retweeted": 0,
-                //     "content": data.content,
-                //     // "timestamp":
-                // }
-                // $('.items-list').prepend(renderItem(item, true));
-            }
         })
     }
 
