@@ -4,32 +4,6 @@ $(function () {
         window.location.replace(page)
     }
 
-    // $('#test').click(() => {
-    //     addMedia();
-    //     // var data = {
-    //     //     "id": "093019215306"
-    //     // }
-        
-    //     // fetch("/getgame", {
-    //     //     method: "POST",
-    //     //     mode: "cors",
-    //     //     cache: "no-cache",
-    //     //     credentials: "same-origin",
-    //     //     headers: {
-    //     //         "Content-Type": "application/json"
-    //     //     },
-    //     //     redirect: "follow",
-    //     //     referrer: "no-referrer",
-    //     //     body: JSON.stringify(data)
-    //     // })
-    //     // .then(response => {
-    //     //     return response.json();
-    //     // })
-    //     // .then(response => {
-    //     //     console.log(response);
-    //     // })
-    // })
-
     $('button.signup').click(() => {
         showPage("/signup");
     })
@@ -38,16 +12,12 @@ $(function () {
         showPage("/login");
     })
 
-    $('button.reset').click(() => {
-        resetGame();
-    })
-
     $('button.post-new').click(() => {
         media_ids = [];
-        // for each file in input
         var files = $("input.file.new")[0].files;
         console.log(files)
 
+        // for each file in input
         const addMedias = async _ => {          
             for (let i = 0; i < files.length; i++) {
               const file = files[i]
@@ -57,20 +27,11 @@ $(function () {
             }
 
             console.log(media_ids);
-            // addItem('new', media_ids);
         }
 
         if(files.length > 0)
             addMedias();
 
-        // addMedia(file).then(response => {
-        //     console.log(response);
-
-        //     if(response.status == "OK") {
-        //         console.log(response.id);
-        //         // media_ids.push(response.id)
-        //     }
-        // })
 
         addItem('new', media_ids);
     })
@@ -450,11 +411,9 @@ $(function () {
     async function addMedia(file) {
         var data = new FormData();
         var csrftoken = getCookie('csrftoken')
-        // var file = $("input.file.new")[0].files[0];
-        // data = {}
-        // data['media'] = file
+
         data.append('media', file);
-        
+
         console.log(data)
         return fetch("/addmedia", {
             method: "POST",
@@ -483,26 +442,8 @@ $(function () {
                 return dict;
             }, {});
 
-            // var data = new FormData();
-            // var childType = type == 'new' ? null : type;
-            // data.append("childType", childType);
             data['childType'] = type=='new' ? null : type;
             data['media'] = media_ids;
-
-            // var file = $("input.file.new")[0].files[0];
-            // data['media'] = file
-            // var files = $("input.file.new")[0].files;
-            // console.log(files)
-
-            // for (let i = 0; i < files.length; i++) {
-            //     let file = files[i]
-            
-            //     // data.append('files[]', file)
-            //     data['media'][i] = file;
-            // }
-
-            // data['media'] = file;
-            // console.log(file)
             
             console.log(data)
             fetch("/additem", {
