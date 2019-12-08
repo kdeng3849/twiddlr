@@ -43,15 +43,36 @@ $(function () {
     })
 
     $('button.post-new').click(() => {
-        addMedia().then(response => {
-            console.log(response);
+        media_ids = [];
+        // for each file in input
+        var files = $("input.file.new")[0].files;
+        console.log(files)
 
-            if(response.status == "OK") {
-                console.log(response.id);
+        const addMedias = async _ => {          
+            for (let i = 0; i < files.length; i++) {
+              const file = files[i]
+              const id = await addMedia(file)
+              console.log(id)
+              media_ids.push(id)
             }
-        })
 
-        addItem('new');
+            console.log(media_ids);
+            // addItem('new', media_ids);
+        }
+
+        if(files.length > 0)
+            addMedias();
+
+        // addMedia(file).then(response => {
+        //     console.log(response);
+
+        //     if(response.status == "OK") {
+        //         console.log(response.id);
+        //         // media_ids.push(response.id)
+        //     }
+        // })
+
+        addItem('new', media_ids);
     })
 
     $('button.post-reply').click(() => {
@@ -426,10 +447,10 @@ $(function () {
         })
     })
 
-    function addMedia() {
+    async function addMedia(file) {
         var data = new FormData();
         var csrftoken = getCookie('csrftoken')
-        var file = $("input.file.new")[0].files[0];
+        // var file = $("input.file.new")[0].files[0];
         // data = {}
         // data['media'] = file
         data.append('media', file);
@@ -453,7 +474,7 @@ $(function () {
         })
     }
 
-    function addItem(type) {
+    function addItem(type, media_ids) {
         $('form.post-' + type).submit(function(event) {
             event.preventDefault();
     
@@ -466,10 +487,10 @@ $(function () {
             // var childType = type == 'new' ? null : type;
             // data.append("childType", childType);
             data['childType'] = type=='new' ? null : type;
-            // data['media'] = []
+            data['media'] = media_ids;
 
-            var file = $("input.file.new")[0].files[0];
-            data['media'] = file
+            // var file = $("input.file.new")[0].files[0];
+            // data['media'] = file
             // var files = $("input.file.new")[0].files;
             // console.log(files)
 
@@ -515,6 +536,7 @@ $(function () {
                         // "timestamp":
                     }
                     // $('.items-list').prepend(renderItem(item, true));
+                    console.log("hello", media_ids)
                 }
             })
         })
