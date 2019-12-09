@@ -12,7 +12,7 @@ class Item(models.Model):
     content = models.CharField(max_length=280)
     timestamp = models.FloatField(default=time.time)
     childtype = models.CharField(max_length=25, null=True)
-    parent = models.CharField(max_length=50, blank=True)
+    parent = models.CharField(max_length=50, blank=True, null=True)
     media = ArrayField(models.CharField(max_length=50), default=list)
 
     def get_item(self):

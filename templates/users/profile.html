@@ -65,7 +65,7 @@
                     {% if user.username == item.username %}
                         <button class="delete btn btn-sm btn-link text-danger" id="delete-{{ item.id }}"><small><i class="fas fa-trash-alt"></i></small></button>
                     {% endif %}
-                    <button class="btn btn-sm btn-link" id="reply-{{ item.id }}" data-toggle="collapse" data-target="#post-reply-{{ item.id }}"><small><i class="fas fa-reply"></i></small></button>
+                    <button class="btn btn-sm btn-link" data-toggle="collapse" data-target="#post-reply-{{ item.id }}"><small><i class="fas fa-reply"></i></small></button>
                     <button class="btn btn-sm btn-link" id="retweet-{{ item.id }}" data-toggle="collapse" data-target="#post-retweet-{{ item.id }}"><small><i class="fas fa-retweet"></i></small></button>
                     <button class="like btn btn-sm btn-link text-decoration-none" id="like-{{ item.id }}"><small><i class="far fa-heart"></i> <span class="likes-{{ item.id }}">{{ item.property.likes }}</span></small></button>
                 </span>
@@ -83,7 +83,7 @@
                     </div>
                 </div>
                 <div class="d-flex justify-content-end">
-                    <button type="submit" class="post-reply btn btn-primary rounded-pill px-4">Reply</button>
+                    <button type="submit" class="post-reply btn btn-primary rounded-pill px-4" id="reply-{{ item.id }}">Reply</button>
                 </div>
             </form>
         </div>

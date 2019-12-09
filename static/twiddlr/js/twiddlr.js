@@ -13,7 +13,7 @@ $(function () {
     })
 
     $('button.post-new').click(() => {
-        media_ids = [];
+        var media_ids = [];
         var files = $("input.file.new")[0].files;
         console.log(files)
 
@@ -37,7 +37,8 @@ $(function () {
     })
 
     $('button.post-reply').click(() => {
-        addItem('reply');
+        var media_ids = []
+        addItem('reply', media_ids);
     })
 
     $('button.post-retweet').click(() => {

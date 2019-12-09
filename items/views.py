@@ -60,24 +60,20 @@ def add_item(request):
 
     data = json.loads(request.body, encoding='utf-8')
 
-    try:
-        username = request.user.username
-        content = data['content']
-        # child_type = data['childType']
-    except KeyError:
-        context = {
-            'status': 'error',
-            'error': "POST body must include properties 'content', 'parent', and 'media' in the form of JSON",
-        }
-        return JsonResponse(context)
+    username = request.user.username
+    content = data.get('content')
+    childtype = data.get('childType')
+    parent = data.get('parent')
+    media = data.get('media')
 
-    item = Item(id=uuid.uuid4().node, username=username, content=content)
+    item = Item(id=uuid.uuid4().node, username=username, content=content, childtype=childtype, parent=parent, media=media)
     # item.id = uuid.uuid4().node
     # item.username = username
     # # item.property = ItemProperty()
     # item.content = content
     item.save()
     # print(type(item.id))
+    print("media", item.media)
 
     context = {
         'status': 'OK',
