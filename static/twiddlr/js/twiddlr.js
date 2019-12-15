@@ -30,10 +30,9 @@ $(function () {
         }
 
         if(files.length > 0)
-            addMedias();
-
-
-        addItem('new', media_ids);
+            addMedias().then(addItem('new', media_ids));
+        else
+            addItem('new', media_ids);
     })
 
     $('button.post-reply').click(() => {
@@ -416,7 +415,7 @@ $(function () {
         data.append('media', file);
 
         console.log(data)
-        return fetch("/addmedia", {
+        response = await fetch("/addmedia", {
             method: "POST",
             mode: "cors",
             cache: "no-cache",
@@ -429,9 +428,10 @@ $(function () {
             referrer: "no-referrer",
             body: data
         })
-        .then(response => {
-            return response.json();
-        })
+        // .then(response => {
+        //     return response.json();
+        // })
+        return response.json();
     }
 
     function addItem(type, media_ids) {
